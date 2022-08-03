@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background: #fbe1ba url('./sean-oulashin-KMn4VEeEPR8-unsplash.jpg');
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform-origin: 100%; /* added, changes axis of rotation */
+      transition: all 0.05s; /* added, easy transition */
+      transition-timing-function: cubic-bezier(0.1,2.7,.58,1); /* added, gives nice clock like animation */
+      transform: rotate(90deg); /* added, start hand at 00 position on the clock */
+    }
+
+  </style>
+
+  <script>
+    function updateEverySecond(){
+      // get the time
+      let date = new Date(), // create new Date object with date and time
+        hh = date.getHours(), // get the hours from Date object
+        mm = date.getMinutes(), // get the minutes from Date object
+        ss = date.getSeconds(); // get the seconds from Date object
+
+        // change second hand every second
+        const ssDegrees = ((ss / 60) * 360) + 90, // math for where the hand should be, this one is second
+              mmDegrees = ((mm / 60) * 360) + 90, // this one is minutes
+              hhDegrees = ((hh / 12) * 360) + 90; // this one is hours, has to be divided by 12 instead
+        document.querySelector('.second-hand').style.transform = `rotate(${ssDegrees}deg)`; // get hand from DOM and point it to where the math says is the correct angle
+        document.querySelector('.min-hand').style.transform = `rotate(${mmDegrees}deg)`; // same here for the minutes
+        document.querySelector('.hour-hand').style.transform = `rotate(${hhDegrees}deg)`; // and for the hours
+
+        // remove awkward transition back to 0 where hand is jerked in opposite direction
+        // if(ss == 59){
+        //   console.log('59')
+        //   document.querySelector('.second-hand').style.transition = 'none' // this also removes the cubic-bezier so it'll need to be tweaked
+        // }else if(ss == 0){
+        //   console.log(ss)
+        //   document.querySelector('.second-hand').style.transition = 'all 0.05s'
+        // }
+    }
+    setInterval(updateEverySecond, 1000); // update time every second
+
+  </script>
+</body>
+</html>
