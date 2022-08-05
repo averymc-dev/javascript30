@@ -78,22 +78,22 @@
         mm = date.getMinutes(), // get the minutes from Date object
         ss = date.getSeconds(); // get the seconds from Date object
 
-        // change second hand every second
-        const ssDegrees = ((ss / 60) * 360) + 90, // math for where the hand should be, this one is second
-              mmDegrees = ((mm / 60) * 360) + 90, // this one is minutes
-              hhDegrees = ((hh / 12) * 360) + 90; // this one is hours, has to be divided by 12 instead
-        document.querySelector('.second-hand').style.transform = `rotate(${ssDegrees}deg)`; // get hand from DOM and point it to where the math says is the correct angle
-        document.querySelector('.min-hand').style.transform = `rotate(${mmDegrees}deg)`; // same here for the minutes
-        document.querySelector('.hour-hand').style.transform = `rotate(${hhDegrees}deg)`; // and for the hours
+      // change second hand every second
+      const ssDegrees = ((ss / 60) * 360) + 90, // math for where the hand should be, this one is second
+            mmDegrees = ((mm / 60) * 360) + 90, // this one is minutes
+            hhDegrees = ((hh / 12) * 360) + 90; // this one is hours, has to be divided by 12 instead
+      document.querySelector('.second-hand').style.transform = `rotate(${ssDegrees}deg)`; // get hand from DOM and point it to where the math says is the correct angle
+      document.querySelector('.min-hand').style.transform = `rotate(${mmDegrees}deg)`; // same here for the minutes
+      document.querySelector('.hour-hand').style.transform = `rotate(${hhDegrees}deg)`; // and for the hours
 
-        // remove awkward transition back to 0 where hand is jerked in opposite direction
-        // if(ss == 59){
-        //   console.log('59')
-        //   document.querySelector('.second-hand').style.transition = 'none' // this also removes the cubic-bezier so it'll need to be tweaked
-        // }else if(ss == 0){
-        //   console.log(ss)
-        //   document.querySelector('.second-hand').style.transition = 'all 0.05s'
-        // }
+      // remove awkward transition back to 0 where hand is jerked in opposite direction
+      // if(ss == 59){
+      //   console.log('59')
+      //   document.querySelector('.second-hand').style.transition = 'none' // this also removes the cubic-bezier so it'll need to be tweaked
+      // }else if(ss == 0){
+      //   console.log(ss)
+      //   document.querySelector('.second-hand').style.transition = 'all 0.05s'
+      // }
     }
     setInterval(updateEverySecond, 1000); // update time every second
 
