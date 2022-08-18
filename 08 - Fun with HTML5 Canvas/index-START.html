@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.querySelector('#draw') // selects the canvas element and saves it as a variable
+  const ctx = canvas.getContext('2d') // applies CanvasRenderingContext2D interface
+  canvas.width = window.innerWidth // sets the canvas to be as wide as the window 
+  canvas.height = window.innerHeight // sets the canvas to be as tall as the window
+  ctx.strokeStyle = '#BADA55' // adds color to stroker
+  ctx.lineJoin = 'round' // determines the shape used to join two line segments where they meet
+  ctx.lineCap = 'round' // determines the shape used to draw the end points of lines
+  ctx.lineWidth = 100
+  // ctx.globalCompositeOperation = 'multiply'; // blend mode
+
+  let isDrawing = false // a 'flag' for the brushstroke to appear on page, is false and will toggle to true on click down
+  let lastX = 0 // end x-coordinate
+  let lastY = 0 // end y-coordinate
+  let hue = 0 // starting value for color of stroke
+  let direction = true // logic for either increasing or decreasing size of stroke
+
+  function draw(e){ // takes in mouse event from listener
+    if(!isDrawing) return; // stops function from running when isDrawing is false
+    console.log(e); // just a little checkie poo
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; // changes color of stroke to '0' or 'red' when stroking starts
+    ctx.beginPath(); // starts the painting
+    ctx.moveTo(lastX, lastY); // start coordinates
+    ctx.lineTo(e.offsetX, e.offsetY); // move coordinates
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY]; // changes variable to achieve line strokes on canvas
+    hue++; // cycles through colors
+    if(hue>=360){ // make a continuous cycle of the colors from 0 to 360
+      hue = 0; // resets color to '0' or 'red'
+    }
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) { // flips the logic for inc or dec size of stroke
+      direction = !direction;
+    }
+    if(direction){ // gate for either making stroke bigger or smaller
+      ctx.lineWidth++; // increments 0 to 100
+    } else { ctx.lineWidth--; } // increments 100 to 0
+
+     // will increment lineWidth with everyloop, making the stroke bigger
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true; // allows function draw to begin painting on that part of the canvas
+    [lastX, lastY] = [e.offsetX, e.offsetY]; // update lastX and lastY so that it will start new stroke cleanly
+  })
+  canvas.addEventListener('mousemove', draw)
+  canvas.addEventListener('mouseup', () => isDrawing = false) // trips ! in function to stop it from painting
+  canvas.addEventListener('mouseout', () => isDrawing = false) // trips ! in function to stop it from painting 
+
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
